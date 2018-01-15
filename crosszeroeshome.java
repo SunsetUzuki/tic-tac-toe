@@ -18,7 +18,7 @@ public class crosszeroeshome {
         do {
             movenumber++;
             makeMove(gameField, symbol, select, movenumber);
-            symbol = symbol == 'X' ? '0' : 'X';//игровой процесс
+            symbol = symbol == 'X' ? '0' : 'X';//игровой процесс основа
             showGameField(gameField);
             result = checkField(gameField);
         } while (result == 0);
