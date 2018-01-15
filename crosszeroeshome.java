@@ -4,35 +4,36 @@ import java.util.Scanner;
 
 public class crosszeroeshome {
 
+
+    public static final int CONTINUE = 0;//находится вне метода
+    public static final int WIN_1 = 1;
+    public static final int WIN_2 = 2;
+    public static final int DRAW = 3;
+
+    public static final char PLAYER_1='X';
+    public static final char PLAYER_2='0';
+    public static final char EMPTY=' ';
+
     public static void main(String[] args) {
+
         int select;
         int movenumber = 0;
         System.out.println("Выберите режим игры:\n1 - два игрока\n2 - против компа ЛЕГКО\n3 - против компа ТЯЖЕЛО\n4 - два компа против друг друга ");
         Scanner scanner = new Scanner(System.in);
         select = scanner.nextInt();
 
-        char[][] gameField = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
+        char[][] gameField = {{EMPTY, EMPTY, EMPTY}, {EMPTY, EMPTY, EMPTY}, {EMPTY, EMPTY, EMPTY}};
         showGameField(gameField);
         int result;
-        char symbol = 'X';
+        char symbol = PLAYER_1;
         do {
             movenumber++;
             makeMove(gameField, symbol, select, movenumber);
-            symbol = symbol == 'X' ? '0' : 'X';//игровой процесс основа
+            symbol = symbol == PLAYER_1 ? PLAYER_2 : PLAYER_1;//игровой процесс основа
             showGameField(gameField);
             result = checkField(gameField);
-        } while (result == 0);
-        switch (result) {
-            case 1:
-                System.out.println("Победа X");
-                break;
-            case 2:
-                System.out.println("Победа 0");
-                break;
-            case 3:
-                System.out.println("Ничья");
-        }
-
+        } while (result == CONTINUE);
+        showResult(result);
 
     }
 
@@ -49,107 +50,107 @@ public class crosszeroeshome {
                 number = scanner.nextInt();
             }
 
-            if (select == 2 && symbol == '0') {//АИ легкий
+            if (select == 2 && symbol == PLAYER_2) {//АИ легкий
                 number = (int) (Math.random() * 10);
-            } else if (select == 2 && symbol == 'X') {
+            } else if (select == 2 && symbol == PLAYER_1) {
                 number = scanner.nextInt();
             }
 
-            if (select == 3 && symbol == 'X') {//АИ Тяжелый
+            if (select == 3 && symbol == PLAYER_1) {//АИ Тяжелый
                 number = scanner.nextInt();
-            } else if (select == 3 && symbol == '0') {
-                if (gameField[1][1] == ' ') {
+            } else if (select == 3 && symbol == PLAYER_2) {
+                if (gameField[1][1] == EMPTY) {
                     number = 5;
-                } else if (gameField[0][0] == ' ') {
+                } else if (gameField[0][0] == EMPTY) {
                     number = 7;
-                } else if (gameField[0][2] == ' ') {
+                } else if (gameField[0][2] == EMPTY) {
                     number = 9;
-                } else if (gameField[2][0] == ' ') {
+                } else if (gameField[2][0] == EMPTY) {
                     number = 1;
-                } else if (gameField[2][2] == ' ') {
+                } else if (gameField[2][2] == EMPTY) {
                     number = 3;
                 }
                 if (movenumber > 2) {
-                    if (gameField[0][0] == '0' && gameField[0][1] == '0' && gameField[0][2] == ' ') {//алгоритм победы
+                    if (gameField[0][0] == PLAYER_2 && gameField[0][1] == PLAYER_2 && gameField[0][2] == EMPTY) {//алгоритм победы
                         number = 9;
-                    } else if (gameField[0][0] == '0' && gameField[0][2] == '0' && gameField[0][1] == ' ') {
+                    } else if (gameField[0][0] == PLAYER_2 && gameField[0][2] == PLAYER_2 && gameField[0][1] == EMPTY) {
                         number = 8;
-                    } else if (gameField[0][1] == '0' && gameField[0][2] == '0' && gameField[0][0] == ' ') {
+                    } else if (gameField[0][1] == PLAYER_2 && gameField[0][2] == PLAYER_2 && gameField[0][0] == EMPTY) {
                         number = 7;
-                    } else if (gameField[0][0] == '0' && gameField[1][0] == '0' && gameField[2][0] == ' ') {
+                    } else if (gameField[0][0] == PLAYER_2 && gameField[1][0] == PLAYER_2 && gameField[2][0] == EMPTY) {
                         number = 1;
-                    } else if (gameField[0][0] == '0' && gameField[2][0] == '0' && gameField[1][0] == ' ') {
+                    } else if (gameField[0][0] == PLAYER_2 && gameField[2][0] == PLAYER_2 && gameField[1][0] == EMPTY) {
                         number = 4;
-                    } else if (gameField[2][0] == '0' && gameField[1][0] == '0' && gameField[0][0] == ' ') {
+                    } else if (gameField[2][0] == PLAYER_2 && gameField[1][0] == PLAYER_2 && gameField[0][0] == EMPTY) {
                         number = 7;
-                    } else if (gameField[2][0] == '0' && gameField[2][1] == '0' && gameField[2][2] == ' ') {
+                    } else if (gameField[2][0] == PLAYER_2 && gameField[2][1] == PLAYER_2 && gameField[2][2] == EMPTY) {
                         number = 3;
-                    } else if (gameField[2][0] == '0' && gameField[2][2] == '0' && gameField[2][1] == ' ') {
+                    } else if (gameField[2][0] == PLAYER_2 && gameField[2][2] == PLAYER_2 && gameField[2][1] == EMPTY) {
                         number = 2;
-                    } else if (gameField[2][1] == '0' && gameField[2][2] == '0' && gameField[2][0] == ' ') {
+                    } else if (gameField[2][1] == PLAYER_2 && gameField[2][2] == PLAYER_2 && gameField[2][0] == EMPTY) {
                         number = 1;
-                    } else if (gameField[0][2] == '0' && gameField[1][2] == '0' && gameField[2][2] == ' ') {
+                    } else if (gameField[0][2] == PLAYER_2 && gameField[1][2] == PLAYER_2 && gameField[2][2] == EMPTY) {
                         number = 3;
-                    } else if (gameField[0][2] == '0' && gameField[2][2] == '0' && gameField[1][2] == ' ') {
+                    } else if (gameField[0][2] == PLAYER_2 && gameField[2][2] == PLAYER_2 && gameField[1][2] == EMPTY) {
                         number = 6;
-                    } else if (gameField[1][2] == '0' && gameField[2][2] == '0' && gameField[0][2] == ' ') {
+                    } else if (gameField[1][2] == PLAYER_2 && gameField[2][2] == PLAYER_2 && gameField[0][2] == EMPTY) {
                         number = 9;
-                    } else if (gameField[0][1] == '0' && gameField[1][1] == '0' && gameField[2][1] == ' ') {
+                    } else if (gameField[0][1] == PLAYER_2 && gameField[1][1] == PLAYER_2 && gameField[2][1] == EMPTY) {
                         number = 2;
-                    } else if (gameField[1][1] == '0' && gameField[2][1] == '0' && gameField[0][1] == ' ') {
+                    } else if (gameField[1][1] == PLAYER_2 && gameField[2][1] == PLAYER_2 && gameField[0][1] == EMPTY) {
                         number = 8;
-                    } else if (gameField[1][0] == '0' && gameField[1][1] == '0' && gameField[1][2] == ' ') {
+                    } else if (gameField[1][0] == PLAYER_2 && gameField[1][1] == PLAYER_2 && gameField[1][2] == EMPTY) {
                         number = 6;
-                    } else if (gameField[1][1] == '0' && gameField[1][2] == '0' && gameField[1][0] == ' ') {
+                    } else if (gameField[1][1] == PLAYER_2 && gameField[1][2] == PLAYER_2 && gameField[1][0] == EMPTY) {
                         number = 4;
-                    } else if (gameField[0][0] == '0' && gameField[1][1] == '0' && gameField[2][2] == ' ') {
+                    } else if (gameField[0][0] == PLAYER_2 && gameField[1][1] == PLAYER_2 && gameField[2][2] == EMPTY) {
                         number = 3;
-                    } else if (gameField[1][1] == '0' && gameField[2][2] == '0' && gameField[0][0] == ' ') {
+                    } else if (gameField[1][1] == PLAYER_2 && gameField[2][2] == PLAYER_2 && gameField[0][0] == EMPTY) {
                         number = 7;
-                    } else if (gameField[2][0] == '0' && gameField[1][1] == '0' && gameField[0][2] == ' ') {
+                    } else if (gameField[2][0] == PLAYER_2 && gameField[1][1] == PLAYER_2 && gameField[0][2] == EMPTY) {
                         number = 9;
-                    } else if (gameField[1][1] == '0' && gameField[0][2] == '0' && gameField[2][0] == ' ') {
+                    } else if (gameField[1][1] == PLAYER_2 && gameField[0][2] == PLAYER_2 && gameField[2][0] == EMPTY) {
                         number = 1;
 
-                    } else if (gameField[0][0] == 'X' && gameField[0][1] == 'X' && gameField[0][2] == ' ') {//алгоритм защиты от победы
+                    } else if (gameField[0][0] == PLAYER_1 && gameField[0][1] == PLAYER_1 && gameField[0][2] == EMPTY) {//алгоритм защиты от победы
                         number = 9;
-                    } else if (gameField[0][0] == 'X' && gameField[0][2] == 'X' && gameField[0][1] == ' ') {
+                    } else if (gameField[0][0] == PLAYER_1 && gameField[0][2] == PLAYER_1 && gameField[0][1] == EMPTY) {
                         number = 8;
-                    } else if (gameField[0][1] == 'X' && gameField[0][2] == 'X' && gameField[0][0] == ' ') {
+                    } else if (gameField[0][1] == PLAYER_1 && gameField[0][2] == PLAYER_1 && gameField[0][0] == EMPTY) {
                         number = 7;
-                    } else if (gameField[0][0] == 'X' && gameField[1][0] == 'X' && gameField[2][0] == ' ') {
+                    } else if (gameField[0][0] == PLAYER_1 && gameField[1][0] == PLAYER_1 && gameField[2][0] == EMPTY) {
                         number = 1;
-                    } else if (gameField[0][0] == 'X' && gameField[2][0] == 'X' && gameField[1][0] == ' ') {
+                    } else if (gameField[0][0] == PLAYER_1 && gameField[2][0] == PLAYER_1 && gameField[1][0] == EMPTY) {
                         number = 4;
-                    } else if (gameField[2][0] == 'X' && gameField[1][0] == 'X' && gameField[0][0] == ' ') {
+                    } else if (gameField[2][0] == PLAYER_1 && gameField[1][0] == PLAYER_1 && gameField[0][0] == EMPTY) {
                         number = 7;
-                    } else if (gameField[2][0] == 'X' && gameField[2][1] == 'X' && gameField[2][2] == ' ') {
+                    } else if (gameField[2][0] == PLAYER_1 && gameField[2][1] == PLAYER_1 && gameField[2][2] == EMPTY) {
                         number = 3;
-                    } else if (gameField[2][0] == 'X' && gameField[2][2] == 'X' && gameField[2][1] == ' ') {
+                    } else if (gameField[2][0] == PLAYER_1 && gameField[2][2] == PLAYER_1 && gameField[2][1] == EMPTY) {
                         number = 2;
-                    } else if (gameField[2][1] == 'X' && gameField[2][2] == 'X' && gameField[2][0] == ' ') {
+                    } else if (gameField[2][1] == PLAYER_1 && gameField[2][2] == PLAYER_1 && gameField[2][0] == EMPTY) {
                         number = 1;
-                    } else if (gameField[0][2] == 'X' && gameField[1][2] == 'X' && gameField[2][2] == ' ') {
+                    } else if (gameField[0][2] == PLAYER_1 && gameField[1][2] == PLAYER_1 && gameField[2][2] == EMPTY) {
                         number = 3;
-                    } else if (gameField[0][2] == 'X' && gameField[2][2] == 'X' && gameField[1][2] == ' ') {
+                    } else if (gameField[0][2] == PLAYER_1 && gameField[2][2] == PLAYER_1 && gameField[1][2] == EMPTY) {
                         number = 6;
-                    } else if (gameField[1][2] == 'X' && gameField[2][2] == 'X' && gameField[0][2] == ' ') {
+                    } else if (gameField[1][2] == PLAYER_1 && gameField[2][2] == PLAYER_1 && gameField[0][2] == EMPTY) {
                         number = 9;
-                    } else if (gameField[0][1] == 'X' && gameField[1][1] == 'X' && gameField[2][1] == ' ') {
+                    } else if (gameField[0][1] == PLAYER_1 && gameField[1][1] == PLAYER_1 && gameField[2][1] == EMPTY) {
                         number = 2;
-                    } else if (gameField[1][1] == 'X' && gameField[2][1] == 'X' && gameField[0][1] == ' ') {
+                    } else if (gameField[1][1] == PLAYER_1 && gameField[2][1] == PLAYER_1 && gameField[0][1] == EMPTY) {
                         number = 8;
-                    } else if (gameField[1][0] == 'X' && gameField[1][1] == 'X' && gameField[1][2] == ' ') {
+                    } else if (gameField[1][0] == PLAYER_1 && gameField[1][1] == PLAYER_1 && gameField[1][2] == EMPTY) {
                         number = 6;
-                    } else if (gameField[1][1] == 'X' && gameField[1][2] == 'X' && gameField[1][0] == ' ') {
+                    } else if (gameField[1][1] == PLAYER_1 && gameField[1][2] == PLAYER_1 && gameField[1][0] == EMPTY) {
                         number = 4;
-                    } else if (gameField[0][0] == 'X' && gameField[1][1] == 'X' && gameField[2][2] == ' ') {
+                    } else if (gameField[0][0] == PLAYER_1 && gameField[1][1] == PLAYER_1 && gameField[2][2] == EMPTY) {
                         number = 3;
-                    } else if (gameField[1][1] == 'X' && gameField[2][2] == 'X' && gameField[0][0] == ' ') {
+                    } else if (gameField[1][1] == PLAYER_1 && gameField[2][2] == PLAYER_1 && gameField[0][0] == EMPTY) {
                         number = 7;
-                    } else if (gameField[2][0] == 'X' && gameField[1][1] == 'X' && gameField[0][2] == ' ') {
+                    } else if (gameField[2][0] == PLAYER_1 && gameField[1][1] == PLAYER_1 && gameField[0][2] == EMPTY) {
                         number = 9;
-                    } else if (gameField[1][1] == 'X' && gameField[0][2] == 'X' && gameField[2][0] == ' ') {
+                    } else if (gameField[1][1] == PLAYER_1 && gameField[0][2] == PLAYER_1 && gameField[2][0] == EMPTY) {
                         number = 1;
                     }
 
@@ -168,7 +169,7 @@ public class crosszeroeshome {
             n = 2 - (number - 1) / 3;
             m = (number - 1) % 3;
         }
-        while (number < 1 || number > 9 || gameField[n][m] != ' ') ;
+        while (number < 1 || number > 9 || gameField[n][m] != EMPTY);
         gameField[n][m] = symbol;
     }
 
@@ -184,37 +185,51 @@ public class crosszeroeshome {
         for (int i = 0; i < 3; i++) {
             if (gameField[i][0] == gameField[i][1]
                     && gameField[i][0] == gameField[i][2]) {
-                if (gameField[i][0] == 'X')
-                    return 1;
-                if (gameField[i][0] == '0')
-                    return 2;
+                if (gameField[i][0] == PLAYER_1)
+                    return WIN_1;
+                if (gameField[i][0] == PLAYER_2)
+                    return WIN_2;
             }
             if (gameField[0][i] == gameField[1][i]
                     && gameField[0][i] == gameField[2][i]) {
-                if (gameField[0][i] == 'X')
-                    return 1;
-                if (gameField[0][i] == '0')
-                    return 2;
+                if (gameField[0][i] == PLAYER_1)
+                    return WIN_1;
+                if (gameField[0][i] == PLAYER_2)
+                    return WIN_2;
             }
         }
         if (gameField[0][0] == gameField[1][1] && gameField[0][0] == gameField[2][2]) {
-            if (gameField[0][0] == 'X')
-                return 1;
-            if (gameField[0][0] == '0')
-                return 2;
+            if (gameField[0][0] == PLAYER_1)
+                return WIN_1;
+            if (gameField[0][0] == PLAYER_2)
+                return WIN_2;
         }
         if (gameField[2][0] == gameField[1][1] && gameField[2][0] == gameField[0][2]) {
-            if (gameField[2][0] == 'X')
-                return 1;
-            if (gameField[2][0] == '0')
-                return 2;
+            if (gameField[2][0] == PLAYER_1)
+                return WIN_1;
+            if (gameField[2][0] == PLAYER_2)
+                return WIN_2;
         }
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
-                if (gameField[i][j] == ' ')
-                    return 0; //Продолжаем
+                if (gameField[i][j] == EMPTY)
+                    return CONTINUE; //Продолжаем
 
-        return 3; //Ничья
+        return DRAW; //Ничья
+    }
+
+    public static void showResult(int result) {
+        switch (result) {
+            case WIN_1:
+                System.out.println("Победа "+PLAYER_1);
+                break;
+            case WIN_2:
+                System.out.println("Победа "+PLAYER_2);
+                break;
+            case DRAW:
+                System.out.println("Ничья");
+
+        }
     }
 }
 
